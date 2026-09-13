@@ -64,7 +64,6 @@ does not own are preserved, so your own notes on a page survive.
 ## Two numbers per concept
 
 | | |
-|---|---|
 | **tested** | decayed mastery from graded answers. A measurement. |
 | **estimate** | inferred from similar concepts and mastered prerequisites. Capped at 0.45, and never presented as knowledge. |
 
