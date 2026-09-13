@@ -1,32 +1,17 @@
-# mentor
+# Sage
 
-A learning mentor that builds its own knowledge of you from the ground up.
-Sessions run calibrate → teach → test, and everything it learns it writes into
-its own Obsidian vault.
+This is my AI learning system. I like learning stuff and I wanted to stop wasting my time with the logistics of learning so I decided to make Sage. I think it is quite useful to view your knowledge with a graph which is why I integrate it with obsidian.
+
+(Please note this is just a work in progress and I am still testing out the various aspects of it) 
 
 ## Two rules
 
-**It knows what it has tested. Nothing else.**
+My core two rules: 
 
-It does not read your personal vault. An earlier version did, and the signal
-was actively harmful: a note proves you wrote something down, not that you
-understand it. Matching notes to concepts produced 8% coverage and false
-positives ("Kubernetes" matched a planning note that merely listed it), and
-feeding that into a mastery model gives a mentor confident about things you
-have never demonstrated.
+1) **It knows what it has tested. Nothing else.**
+2) **It curates; it does not author.**
 
-So it starts empty and earns everything.
-
-**It curates; it does not author.** The agent points at real sources — chapter
-and section — and writes the questions. It does not write explanations,
-derivations or worked examples: an explanation the agent generates is unsourced
-and forgettable, and it lets you feel taught without having read anything. The
-library lives in `Resources/`; add to it with `resource_add`, and the curator
-assigns from it with `assign_material`. When the library cannot cover something
-the curator has `websearch`/`webfetch` and goes looking — but it must `webfetch`
-the page and confirm the section exists before assigning it, then bank it as a
-resource so it is there next time. An unverified locator is a guess, and a dead
-link costs more than no assignment.
+When I learn I prefer to not directly learn from AI. This is because it is very easy to fool yourself into believing you have understood something. However, I do believe that AI is great at testing so I get it to test me and curate sources.
 
 ## The brain
 
@@ -246,4 +231,4 @@ graph.
 
 ## Licence
 
-Not yet chosen. Add one before making the repo public if that matters to you.
+MIT — see [LICENSE](LICENSE).
