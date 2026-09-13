@@ -63,8 +63,8 @@ does not own are preserved, so your own notes on a page survive.
 
 ## Two numbers per concept
 
-l) **tested**   | decayed mastery from graded answers. A measurement. 
-2) **estimate** | inferred from similar concepts and mastered prerequisites. Capped at 0.45, and never presented as knowledge. 
+1. **tested**   | decayed mastery from graded answers. A measurement. 
+2. **estimate** | inferred from similar concepts and mastered prerequisites. Capped at 0.45, and never presented as knowledge. 
 
 Mastery decays: `effective = strength · 2^(-days / half_life)`. A correct answer
 stretches the half-life, a miss collapses it — so review timing falls out of the
