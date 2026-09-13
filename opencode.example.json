@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "mentor": {
+      "type": "local",
+      "command": ["python", "-m", "mentor.server"],
+      "cwd": "/absolute/path/to/Learning System",
+      "environment": {
+        "PYTHONPATH": "/absolute/path/to/Learning System",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUNBUFFERED": "1"
+      },
+      "enabled": true,
+      "timeout": 60000
+    }
+  }
+}

@@ -1,0 +1,21 @@
+# The mentor's brain and session store are personal state, not source.
+# They are generated on first run and describe one person's learning.
+data/
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
