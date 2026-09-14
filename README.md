@@ -164,7 +164,7 @@ neighbour, and to infer where knowledge should carry.
 | `mastery.py` | strength and half-life decay |
 | `store.py` | SQLite: sessions and every graded response |
 | `engine.py` | session lifecycle; concepts auto-create |
-| `server.py` | 27 MCP tools |
+| `server.py` | 28 MCP tools |
 
 ## CLI
 
@@ -185,21 +185,89 @@ mentor math <latex>        LaTeX to Unicode
 ## Setup
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate     # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
-pytest -q                  # 97 tests
+pytest -q                     # 108 tests
+ruff check .
 ```
+
+A venv matters here: the MCP server is launched by opencode, not by you, so if
+its dependencies live in your global site-packages an unrelated `pip install -U`
+can break it. The failure shows up as tools silently missing from the agent,
+which is miserable to diagnose. `mcp` is pinned `<3` for the same reason.
 
 Then wire it into opencode:
 
-1. Copy the `mcp.mentor` block from `opencode.example.json` into your
-   `~/.config/opencode/opencode.json`, replacing the two paths with wherever you
-   cloned this.
-2. Copy `agent/*.md` into `~/.config/opencode/agent/`. Those are the prompt
-   layer — `mentor` is the primary agent, the other five are its subagents.
-3. Start opencode and switch to the `mentor` agent.
+1. Copy `opencode.example.json` into `~/.config/opencode/opencode.json`, or
+   merge its blocks into yours. Replace the interpreter path in `mcp.mentor.command`
+   with the `python` inside the venv you just made.
+2. Copy `agent/*.md` into `~/.config/opencode/agent/` — the prompt layer.
+   `mentor` is the primary agent, the other five are its subagents.
+3. Copy `command/*.md` into `~/.config/opencode/command/` for the slash commands.
+4. Copy `AGENTS.md` into `~/.config/opencode/` and edit it: it carries the rules
+   that bind every agent, including which vault is off-limits and who you are.
+5. Start opencode and switch to the `mentor` agent.
 
 `MENTOR_BRAIN` moves the vault, `MENTOR_DATA` moves everything. Both default to
 `data/`, which is gitignored: the brain is one person's learning, not source.
+
+## Commands
+
+| | |
+|---|---|
+| `/learn <topic>` | the full session: calibrate, assign, read, test, record |
+| `/test <topic>` | straight to the exit test, no teaching |
+| `/next [goal]` | what is due, what is learnable, the route to a goal |
+| `/review <file>` | rate code on five dimensions |
+| `/due` | five-minute spaced-repetition drill |
+| `/brain` | graph health: cycles, unresolved prereqs, untested concepts |
+| `/model-map` | see or change which model each agent runs on |
+
+## Choosing models
+
+Each agent runs on its own model, set in one place — the `agent` block of your
+`opencode.json`. `scripts/models.py` reads and edits it so you do not have to:
+
+```
+python scripts/models.py                                    # the current map
+python scripts/models.py list opus                          # what you can pick
+python scripts/models.py set examiner anthropic/claude-haiku-4-5
+```
+
+It validates ids against opencode's own catalogue, only suggests providers you
+are signed in to, rewrites a single line, and refuses to write a file that does
+not parse. `/model-map` is the same thing from inside the TUI, and will propose
+a whole map if you ask it to make things cheaper.
+
+Rough guide: `calibrator` and `examiner` carry the most turns and need the least
+reasoning, so move those down first. `reviewer` and `cartographer` do the actual
+thinking. `mentor` writes the pages everything later depends on.
+
+## Tests and CI
+
+```
+pytest -q        # 108 tests
+ruff check .
+```
+
+`tests/test_mentor.py` covers the engine; `tests/test_server.py` covers the MCP
+layer, including a check that every tool named in an agent prompt actually
+exists on the server — a prompt that calls a tool that was never registered
+otherwise fails mid-session, which is how `unicode_math` went unnoticed.
+
+CI runs both on Windows and Linux across 3.11 and 3.12. Locally,
+`git config core.hooksPath .githooks` runs the same checks before each commit.
+
+Ruff has `RUF001-003` disabled on purpose: they flag "ambiguous unicode", and
+Greek letters, blackboard bold and set operators are this project's subject
+matter.
+
+## Writing your own agent
+
+`templates/agent.md` is a starting point with the conventions the six existing
+agents follow — trigger-shaped description, deny-by-default permissions,
+temperature by job — and the wiring steps that are easy to forget.
 
 ## Using it
 

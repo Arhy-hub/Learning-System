@@ -6,12 +6,16 @@ requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE"]
 dependencies = [
-    "mcp>=2.0.0",
-    "pyyaml>=6.0",
+    # Capped: server.py imports mcp.server.mcpserver, which did not exist before
+    # 2.0 and has no stability guarantee across the next major. An uncapped
+    # upgrade breaks the MCP server at opencode startup, and the symptom is
+    # silently missing tools.
+    "mcp>=2.0.0,<3",
+    "pyyaml>=6.0,<7",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0"]
+dev = ["pytest>=8.0", "ruff>=0.6"]
 
 [project.scripts]
 mentor = "mentor.cli:main"
@@ -25,3 +29,39 @@ packages = ["mentor"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle
+    "F",    # pyflakes: undefined names, unused imports
+    "I",    # import sorting
+    "B",    # bugbear: mutable defaults, shadowed loop vars
+    "UP",   # pyupgrade
+    "SIM",  # simplifiable constructs
+    "RUF",  # ruff-specific
+]
+ignore = [
+    "E501",    # line length is checked by the formatter, not the linter
+    "E731",    # short lambdas assigned to a name are fine here
+    "RUF005",  # list concatenation reads fine; unpacking is not clearer
+    "RUF046",  # redundant int() casts are harmless and document intent
+    "SIM905",  # a long word list reads far better as a triple-quoted block
+               # with semantic line breaks than as one enormous list literal
+    "SIM108",  # ternaries are not always clearer than if/else
+    "B008",    # function calls in defaults are deliberate in a few places
+    "RUF001",  # "ambiguous" unicode: this project is about maths notation.
+               # Greek, blackboard bold and set operators are the subject matter.
+    "RUF002",  # same, in docstrings
+    "RUF003",  # same, in comments
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E402"]
+# The argparse block is a declaration table: one subcommand per line, read in a
+# column. Splitting each into three statements makes it markedly worse.
+"mentor/cli.py" = ["E702"]

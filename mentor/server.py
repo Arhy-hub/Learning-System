@@ -12,6 +12,7 @@ from typing import Any
 from mcp.server.mcpserver import MCPServer
 
 from .engine import Engine
+from .mathtext import to_unicode
 
 mcp = MCPServer(
     "mentor",
@@ -316,6 +317,16 @@ def reindex() -> str:
     e = E()
     e._refresh()
     return _j(e.status())
+
+
+@mcp.tool()
+def unicode_math(latex: str) -> str:
+    """LaTeX -> Unicode, for maths that has to be read in the terminal.
+
+    The TUI has no maths renderer, so LaTeX source arrives as literal
+    characters. Convert anything you are unsure of before writing it.
+    """
+    return to_unicode(latex)
 
 
 def main() -> None:

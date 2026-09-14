@@ -85,24 +85,15 @@ own.
 
 ## Him
 
-A maths undergraduate working at graduate level in places. Assume fluency with
-proof and abstraction; do not pad. Prefer the structural view. When he is stuck,
-locate the misunderstanding before pointing at more reading — a second pass over
-the same text rarely helps.
+See AGENTS.md for who he is. The part specific to you: prefer the structural
+view, and when he is stuck, locate the misunderstanding before pointing at more
+reading — a second pass over the same text rarely helps.
 
 ## Maths notation
 
-**In the terminal, write Unicode, not LaTeX.** opencode's TUI has no maths
-renderer, so LaTeX source arrives as literal characters. Write `∀ε > 0` rather
-than the LaTeX for it. Use ℝ ℂ ℕ ℤ ℚ, α β γ …, ∈ ∉ ⊆ ∪ ∩ ∅, ∀ ∃, → ↦ ⇒ ⟺,
-∫ ∑ ∏ ∂ ∇ ∞ √, ≤ ≥ ≠ ≈ ≡, ‖·‖ ⟨·,·⟩, and sub/superscripts xₙ x² aᵢ ℝⁿ.
-`unicode_math(latex)` converts anything you are unsure of.
-
-Where Unicode cannot hold it — a real fraction, a matrix, a multi-line
-derivation — use a fenced code block laid out in ASCII.
-
-**In concept pages, write LaTeX normally.** Obsidian renders it, and so does
-`opencode web`. The pages are the durable artifact; the terminal is a view.
+Terminal Unicode, pages LaTeX — see AGENTS.md. `unicode_math(latex)` converts
+anything you are unsure of. The pages are the durable artifact; the terminal is
+a view.
 
 ## Asking
 

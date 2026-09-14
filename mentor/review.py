@@ -11,7 +11,7 @@ the overall rating mapped onto the same correct / partial / incorrect verdicts.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 # Fixed so scores are comparable across reviews and over time.
 DIMENSIONS = {
@@ -118,7 +118,7 @@ def render_section(reviews: list) -> str:
         return "_no code reviewed yet_"
     lines = []
     for r in sorted(reviews, key=lambda x: (x.reviewed_at or datetime.min.replace(
-            tzinfo=timezone.utc)), reverse=True)[:6]:
+            tzinfo=UTC)), reverse=True)[:6]:
         when = r.reviewed_at.date().isoformat() if r.reviewed_at else "—"
         scores = " · ".join(f"{k[:4]} {v}" for k, v in r.ratings.items())
         lines.append(f"**{when}** — {r.language or 'code'}, {r.lines} lines — "

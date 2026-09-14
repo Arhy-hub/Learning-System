@@ -363,6 +363,7 @@ class TestQuestionBank:
 
     def test_selection_leads_with_what_was_missed(self, engine):
         from datetime import timedelta
+
         from mentor import questions as qb
         engine.session_start("Compactness")
         engine.calibration_submit([
@@ -376,6 +377,7 @@ class TestQuestionBank:
 
     def test_selection_spreads_across_kinds(self, engine):
         from datetime import timedelta
+
         from mentor import questions as qb
         engine.session_start("Compactness")
         engine.calibration_submit([

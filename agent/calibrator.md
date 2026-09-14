@@ -61,6 +61,5 @@ If a remembered slip has gone, say so — that is the useful signal.
 
 ## Notation
 
-Questions are read in the terminal, which cannot render LaTeX. Write maths in
-Unicode — `∀ε>0 ∃δ`, `f: ℝⁿ → ℝ`, `xₙ → L` — not `$orall \epsilon$`. For
-anything Unicode cannot hold, use a fenced code block in ASCII.
+Questions are read in the terminal: write maths in Unicode, not LaTeX. See
+AGENTS.md.

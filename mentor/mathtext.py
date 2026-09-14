@@ -82,15 +82,15 @@ FRAKTUR = {"A": "𝔄", "B": "𝔅", "C": "ℭ", "D": "𝔇", "E": "𝔈", "F": 
            "G": "𝔊", "H": "ℌ", "I": "ℑ", "M": "𝔐", "N": "𝔑", "R": "ℜ",
            "S": "𝔖", "Z": "ℨ", "a": "𝔞", "b": "𝔟", "m": "𝔪", "p": "𝔭"}
 
-SUPERSCRIPT = {**{c: s for c, s in zip("0123456789+-=()", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾")},
+SUPERSCRIPT = {**{c: s for c, s in zip("0123456789+-=()", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾", strict=True)},
                **{c: s for c, s in zip(
                    "abcdefghijklmnoprstuvwxyz",
-                   "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻ")},
+                   "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻ", strict=True)},
                "T": "ᵀ", "n": "ⁿ", "i": "ⁱ", " ": " ", ".": "˙"}
 
-SUBSCRIPT = {**{c: s for c, s in zip("0123456789+-=()", "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎")},
+SUBSCRIPT = {**{c: s for c, s in zip("0123456789+-=()", "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎", strict=True)},
              **{c: s for c, s in zip("aehijklmnoprstuvx",
-                                     "ₐₑₕᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ")},
+                                     "ₐₑₕᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ", strict=True)},
              " ": " ", ",": ","}
 
 # Combining marks, applied after the base character.
@@ -154,8 +154,8 @@ def _apply_fonts(s: str) -> str:
 def _apply_accents(s: str) -> str:
     for cmd, mark in ACCENTS.items():
         s = re.sub(r"\\" + cmd + r"\{([^{}]*)\}",
-                   lambda m: "".join(c + mark for c in m.group(1)) or "", s)
-        s = re.sub(r"\\" + cmd + r"\s*(\w)", lambda m: m.group(1) + mark, s)
+                   lambda m, k=mark: "".join(c + k for c in m.group(1)) or "", s)
+        s = re.sub(r"\\" + cmd + r"\s*(\w)", lambda m, k=mark: m.group(1) + k, s)
     return s
 
 

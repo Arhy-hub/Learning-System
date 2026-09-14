@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from .config import MasteryParams
@@ -95,7 +95,7 @@ def _dt(s: str | None) -> datetime | None:
     if not s:
         return None
     d = datetime.fromisoformat(s)
-    return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+    return d if d.tzinfo else d.replace(tzinfo=UTC)
 
 
 def _row_to_question(r):
@@ -157,7 +157,7 @@ class Store:
                  last_tested=excluded.last_tested, n_correct=excluded.n_correct,
                  n_total=excluded.n_total, updated_at=excluded.updated_at""",
             (m.concept, m.strength, m.half_life, _iso(m.last_tested),
-             m.n_correct, m.n_total, datetime.now(timezone.utc).isoformat()))
+             m.n_correct, m.n_total, datetime.now(UTC).isoformat()))
         self.db.commit()
 
     def effective_map(self, at: datetime | None = None) -> dict:
@@ -170,7 +170,7 @@ class Store:
             """INSERT INTO sessions(topic,goal,targets,phase,started_at)
                VALUES(?,?,?,?,?)""",
             (topic, goal, json.dumps(targets), "calibrating",
-             datetime.now(timezone.utc).isoformat()))
+             datetime.now(UTC).isoformat()))
         self.db.commit()
         return int(cur.lastrowid)
 
@@ -186,7 +186,7 @@ class Store:
     def close_session(self, sid: int, summary: str) -> None:
         self.db.execute(
             "UPDATE sessions SET phase='closed', closed_at=?, summary=? WHERE id=?",
-            (datetime.now(timezone.utc).isoformat(), summary, sid))
+            (datetime.now(UTC).isoformat(), summary, sid))
         self.db.commit()
 
     def session(self, sid: int):
@@ -211,7 +211,7 @@ class Store:
                                      verdict,note,asked_at,question_id)
                VALUES(?,?,?,?,?,?,?,?,?)""",
             (sid, phase, concept, question, response, verdict, note,
-             datetime.now(timezone.utc).isoformat(), question_id))
+             datetime.now(UTC).isoformat(), question_id))
         self.db.commit()
 
     # -- question bank ---------------------------------------------------
@@ -242,7 +242,7 @@ class Store:
             (q.id, q.concept, q.text, q.kind, q.difficulty, q.asked, q.correct,
              q.streak, _iso(q.last_asked), q.last_verdict or None,
              1 if q.retired else 0, q.source,
-             datetime.now(timezone.utc).isoformat()))
+             datetime.now(UTC).isoformat()))
         self.db.commit()
 
     # -- reviews ---------------------------------------------------------
@@ -253,7 +253,7 @@ class Store:
                VALUES(?,?,?,?,?,?,?,?,?,?)""",
             (session_id, r.concept, r.language, json.dumps(r.ratings),
              json.dumps(r.issues), r.summary, r.lines, r.overall, r.verdict,
-             datetime.now(timezone.utc).isoformat()))
+             datetime.now(UTC).isoformat()))
         self.db.commit()
         return int(cur.lastrowid)
 

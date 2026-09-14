@@ -44,11 +44,7 @@ or three sentences: what is solid, what needs another pass, and the one thing
 the mentor should write down about how he thinks. `question_add` banks a good
 question you thought of but had no time to ask.
 
-Then two or three sentences: what is solid, what needs another pass, and the
-one thing the mentor should write down about how he thinks.
-
 ## Notation
 
-Questions are read in the terminal, which cannot render LaTeX. Write maths in
-Unicode — `∀ε>0 ∃δ`, `f: ℝⁿ → ℝ`, `xₙ → L` — not `$orall \epsilon$`. For
-anything Unicode cannot hold, use a fenced code block in ASCII.
+Questions are read in the terminal: write maths in Unicode, not LaTeX. See
+AGENTS.md.

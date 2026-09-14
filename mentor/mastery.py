@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, replace
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from .config import MasteryParams
 
@@ -24,7 +24,7 @@ VERDICT_SCORE = {"correct": 1.0, "partial": 0.5, "incorrect": 0.0}
 
 
 def now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 @dataclass(frozen=True)

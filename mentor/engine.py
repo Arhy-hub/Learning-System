@@ -11,13 +11,13 @@ import json
 from datetime import date
 from pathlib import Path
 
+from . import questions as qbank
+from . import review as rv
 from .brain import Brain, slug
 from .config import Config, get_config
 from .graph import ConceptGraph
 from .knowledge import KnowledgeModel
 from .mastery import apply_result, summarise
-from . import questions as qbank
-from . import review as rv
 from .similarity import SimilarityIndex
 from .store import Store
 from .text import canon
@@ -128,11 +128,14 @@ class Engine:
                      where: str = "", notes: str = "", covers=None) -> dict:
         """Declare something in the library the mentor may point at."""
         covers = list(covers or [])
-        page = self.brain.find_resource(name)
+        existing = self.brain.find_resource(name)
+        # Keep the original date: "added" means when it entered the library,
+        # and re-registering a book must not make it look new.
+        added = existing.frontmatter.get("added") if existing else None
         fm = {
             "resource": name, "kind": kind, "author": author or None,
             "where": where or None, "covers": covers or None,
-            "added": date.today().isoformat(),
+            "added": added or date.today().isoformat(),
             "tags": ["resource", slug(kind).lower() or "resource"],
         }
         sections = {"Notes": notes} if notes else {}

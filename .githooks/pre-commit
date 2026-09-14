@@ -1,0 +1,21 @@
+#!/bin/sh
+# Lint and test before each commit.
+#
+# Enable once per clone:  git config core.hooksPath .githooks
+# Skip a single commit:   git commit --no-verify
+set -e
+
+PY=python
+[ -x ".venv/Scripts/python.exe" ] && PY=".venv/Scripts/python.exe"
+[ -x ".venv/bin/python" ] && PY=".venv/bin/python"
+
+# Only bother when Python, config or agent prompts changed.
+if git diff --cached --name-only | grep -qE '^(mentor/.*\.py|tests/.*\.py|pyproject\.toml|agent/.*\.md)$'; then
+  echo "pre-commit: ruff"
+  "$PY" -m ruff check . || {
+    echo "pre-commit: ruff failed. Fix, or commit with --no-verify."; exit 1; }
+
+  echo "pre-commit: pytest"
+  PYTHONIOENCODING=utf-8 "$PY" -m pytest -q || {
+    echo "pre-commit: tests failed. Fix, or commit with --no-verify."; exit 1; }
+fi

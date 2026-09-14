@@ -1,12 +1,25 @@
 {
   "$schema": "https://opencode.ai/config.json",
+
+  "model": "anthropic/claude-opus-5",
+  "small_model": "anthropic/claude-haiku-4-5",
+
+  "instructions": ["AGENTS.md"],
+
+  "agent": {
+    "mentor": { "model": "anthropic/claude-opus-5" },
+    "cartographer": { "model": "anthropic/claude-opus-5" },
+    "reviewer": { "model": "anthropic/claude-opus-5" },
+    "curator": { "model": "anthropic/claude-sonnet-5" },
+    "calibrator": { "model": "anthropic/claude-sonnet-5" },
+    "examiner": { "model": "anthropic/claude-sonnet-5" }
+  },
+
   "mcp": {
     "mentor": {
       "type": "local",
-      "command": ["python", "-m", "mentor.server"],
-      "cwd": "/absolute/path/to/Learning System",
+      "command": ["/absolute/path/to/Learning System/.venv/bin/python", "-m", "mentor.server"],
       "environment": {
-        "PYTHONPATH": "/absolute/path/to/Learning System",
         "PYTHONIOENCODING": "utf-8",
         "PYTHONUNBUFFERED": "1"
       },
