@@ -64,4 +64,8 @@ ignore = [
 "tests/*" = ["E402"]
 # The argparse block is a declaration table: one subcommand per line, read in a
 # column. Splitting each into three statements makes it markedly worse.
-"mentor/cli.py" = ["E702"]
+"**/cli.py" = ["E702"]
+
+[tool.ruff.lint.isort]
+# Pin this so import classification does not change with the working directory.
+known-first-party = ["mentor"]
