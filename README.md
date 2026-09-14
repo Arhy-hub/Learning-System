@@ -1,7 +1,7 @@
 # Sage
 
 This is my AI learning system. I like learning stuff and I wanted to stop wasting my time with the logistics of learning so I decided to make Sage. I think it is quite useful to view your knowledge with a graph which is why I integrate it with obsidian.
-
+You can probably tailor this to codex or claude etc but I am trying out opencode as it is provider agnostic.
 (Please note this is just a work in progress and I am still testing out the various aspects of it) 
 
 ## Two rules
